@@ -1,0 +1,142 @@
+list installed packages by their installation size
+    = $ pacman -Qi | gawk '/^Name/ { x = $3 }; /^Installed Size/ { sub(/Installed Size  *:/, ""); print x":" $0 }' | sort -k2,3nr | less
+
+virus scan
+    = $ clamscan
+      update clamscan = $ freshclam
+
+screenshots
+    = $ gyazo
+
+printing
+    -lpstat, lpadmin, lpq, lp, cupsenable, cupsdisable, ...
+    view printer status:
+    = $ lpstat -p HP_ENVY_4520
+    enable or activate printer:
+    = $ sudo cupsenable <queue_name>
+    clear the queue:
+    = $ lprm <job_number>
+    add printer:
+    = $ sudo lpadmin -p HP_4520_or-whatever-queue-name -E -v socket://192.168.1.209 -P /etc/cups/ppd/hp-envy_4520_series.ppd    
+scanning paper
+    hplip: hp-setup & hp-scan
+    or
+    sane: scanimage
+
+tarring:
+    package a tar
+    = $ tar -cvf file.tar /path/to/directory
+    or
+    = $ tar -cvf file.tar /path/to/file1 /path/to/file2 ....
+
+    unpackage a tar
+    = $ tar -xvf file.tar
+
+    list contents of a tar
+    = $ tar -tvf file.tar
+
+mloop mount iso file
+    = mount -o loop ... ?
+    = mloop ...
+
+USB mounting
+    = $ mount /dev/sdbX /somewhere
+    "/somewhere" is either a directory in /mnt/ or in /run/media/jp2/
+
+change keybindings
+    = $ setxkbmap
+    set caps to second ctrl:
+    = $ setxkbmap -option caps:ctrl_modifier
+    xmodmap
+
+Download Youtube as MP3:
+    = $ youtube-dl -x --audio-format mp3 http://URL.....
+
+Backup Harddrive to External USB drive.
+    = - plugin in external hard drive.
+      - find out where it's mounted (accessible via /run/media, device is /dev/sdbX): cat /proc/self/mounted -> probably "/dev/sdb4 /run/media/jp2/f2asdfasdfasdf" at the bottom.
+      - the internal hard drive is /dev/sda4
+      - The command to back up harddrive /dev/sda4 to /dev/sdb4:
+      $ dd if=/dev/sda4 of=/dev/sdb4 conv=noerror,sync status=progress
+Harddrive/device health check
+    = smartctl, smartd
+    = package = smartmontools
+Hard Drive and Memory Space
+    = df -h
+
+create link 'here' to file at 'there'
+    = $ ln -s 'there' 'here'
+
+Update keyrings and signatures
+    = pacman-key -u
+
+control fan speed
+    = su
+    = echo level NUMBER > /proc/acpi/ibm/fan
+    NUMBER is one of {0, 1, 2, 3, 4, 5, 6, 7, auto} where 0 is off, 7 is maximum.
+
+Merge PDF / Image files
+    = gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=merged.pdf mine1.pdf mine2.pdf
+
+SCP - load local file to remote machine via ssh key.
+    = $ scp -C -i ${location to .pem file} -r ${local file} ${remote machine}:${destination directory}
+
+
+Change screen resolution (see ~/LocalFixJournal/dec26-2018-fixVGAdisplay.txt)
+    = $ cvt 1920 1080
+      > # 1920x1080 59.93 Hz (CVT 2.07M9-R) hsync: 66.59 kHz; pclk: 138.50 MHz
+      > Modeline "1920x1080_60.00"  138.50  1920 1968 2000 2080  1080 1083 1088 1111 +hsync -vsync
+      $ xrandr --newmode "1920x1080_60.00"  138.50  1920 1968 2000 2080  1080 1083 1088 1111 +hsync -vsync
+      $ xrandr --addmode VGA-1 1920x1080_60.00
+      $ xrandr --output VGA-1 --mode 1920x1080_60.00
+    =     
+
+Network scan ip
+    = 
+
+better/improved shell programs
+    = rlwrap <shell program>
+    e.g.
+    - rlwrap sbcl
+    - rlwrap jdb
+
+Start JACK using Audiobox USB 96 (I've only tried this when pulseaudio was disabled and stopped in systemd)
+    = $ nohup jackd -d alsa -d hw:1 -r 41000 -X raw &
+    try
+    = $ nohup jackd -T --driver alsa --device hw:1 -H --softmode -r 41000 -p 1024 -X raw &
+           -T exit all clients once they have closed their connection.
+	   -H don't let computer affect input monitoring.. this might not work for AudioBox96
+	   --softmode ignores ALSA xruns -> jack is less likely to disconnect from clients.
+           -p is the max number of ports jack can manage. default is 256
+    
+          "-X raw" is for midi. This allows you to use usb midi connected to computer, with the usb audio box sound card
+
+Convert wav to mp3
+   = $ ffmpeg -i track01.wav -acodec mp3 track01.mp3
+
+remove ip route
+   = $ sudo route del -net 172.16.152.0 gw 0.0.0.0 netmask 255.255.255.0 dev vmnet8
+
+
+
+make sure to set this back to 1 !!! /proc/sys/net/ipv4/conf/enp0s25/ignore_routes_with_linkdown
+
+mysql
+   User privileges: > SHOW GRANTS FOR username;
+   Grant privileges to user: > GRANT ALL ON database.table to 'username'@'localhost';
+
+Repair ext4 filesystem that got fucked up because windows is a cunt:
+   = $ sudo fsck.ext4 /dev/sdb1
+   This can take 10-15 minutes. Maybe more once more of the hard drive fills up.
+
+
+Search for package that file belongs to
+  = $ rpm -q --whatprovides <filename>
+  = $ dpkg -S <filename>
+
+rsync:
+  rsync --info=progress2 --exclude "venv" --exclude ".local" source dest
+  or
+  rsync --info=progress2 --exclude {'venv', 'modules'} source/ dest/
+
+flatpak run com.leinardi.gwe
