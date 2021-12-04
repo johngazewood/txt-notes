@@ -1,0 +1,11 @@
+in TTY:
+$ sudo dumpkeys | head -1 > /usr/share/keymaps/caps2ctrl.map
+or $ sudo dumpkeys > /usr/share/keymaps/caps2ctrl.map
+then add
+keycode 58 = Control
+to the bottom
+$ sudo loadkeys /usr/share/keymaps/caps2ctrl.map
+good to go!
+(load default keyboard with $ sudo loadkeys -d)
+
+
