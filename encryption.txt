@@ -1,0 +1,13 @@
+Open an encrypted partition/usb:
+  1. cryptsetup luksOpen /dev/sde1 whatevername
+     (enter passphrase)
+  2. mount /dev/mapper/whatevername /mnt/usb
+
+Close an opened encrypted parition/sub:
+  1. umount /mnt/usb
+  2. cryptsetup luksClose whatevername
+
+Ecrypting a partition/usb:
+  1. parition a drive /dev/sde to have at least one parition e.g. /dev/sde1
+  2. cryptsetup luksFormat /dev/sde1
+    (enter passphrase twice)
