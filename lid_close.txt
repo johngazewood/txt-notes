@@ -1,0 +1,4 @@
+sudo vim /etc/systemd/logind.conf
+
+HandleLidSwitch=ignore
+other options are lock,poweroff,hibernate
