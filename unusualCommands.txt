@@ -51,6 +51,10 @@ change keybindings
 
 Download Youtube as MP3:
     = $ youtube-dl -x --audio-format mp3 http://URL.....
+    - using python:
+      - make and activate python venv
+      - pip install youtube-dl
+      - youtube-dl -x --audio-format mp3 http://URL.....
 
 Backup Harddrive to External USB drive.
     = - plugin in external hard drive.
